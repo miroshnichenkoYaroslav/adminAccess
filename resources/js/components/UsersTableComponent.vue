@@ -28,9 +28,6 @@
                 </datatable>
             </div>
         </div>
-        <!--        <div class="row">-->
-        <!--            <datatable :columns="columns" :data="rows"></datatable>-->
-        <!--        </div>-->
     </div>
 </template>
 
