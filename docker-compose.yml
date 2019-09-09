@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  blog-server:
+    build: .cloud/docker
+    image: laravel-blog
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/application:cached
+
+  mysql:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=adminAccess
+    volumes:
+      - ./db-data:/var/lib/mysql:cached
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:8000"
+    volumes:
+      - .cloud/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:cached
+      - ./:/application:cached
+    depends_on:
+      - blog-server
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    links:
+      - mysql:mysql
+    ports:
+      - 9191:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: secret
+      PMA_HOST: mysql
+
+volumes:
+  db-data:
