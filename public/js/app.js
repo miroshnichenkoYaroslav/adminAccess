@@ -1732,11 +1732,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -37085,59 +37080,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        { staticClass: "col-xs-12 table-responsive", attrs: { id: "table" } },
-        [
-          _c("datatable", {
-            attrs: { columns: _vm.columns, data: _vm.rows },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(ref) {
-                  var row = ref.row
-                  return [
-                    _c("tr", [
-                      _c("td", [
-                        row.role !== "superadmin"
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-xs btn-primary",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.expand(row.id)
-                                  }
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      { staticClass: "col-xs-12 table-responsive", attrs: { id: "table" } },
+      [
+        _c("datatable", {
+          attrs: { columns: _vm.columns, data: _vm.rows },
+          scopedSlots: _vm._u([
+            {
+              key: "default",
+              fn: function(ref) {
+                var row = ref.row
+                return [
+                  _c("tr", [
+                    _c("td", [
+                      row.role !== "superadmin"
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-xs btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.expand(row.id)
                                 }
-                              },
-                              [_c("span", [_vm._v("Edit Access")])]
-                            )
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(row.id))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(row.role))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(row.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(row.email))])
+                              }
+                            },
+                            [_c("span", [_vm._v("Edit Access")])]
+                          )
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _vm.expanded === row.id
-                      ? _c("tr", [_c("td", { attrs: { colspan: "6" } })])
-                      : _vm._e()
-                  ]
-                }
+                    _c("td", [_vm._v(_vm._s(row.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(row.role))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(row.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(row.email))])
+                  ]),
+                  _vm._v(" "),
+                  _vm.expanded === row.id
+                    ? _c("tr", [_c("td", { attrs: { colspan: "6" } })])
+                    : _vm._e()
+                ]
               }
-            ])
-          })
-        ],
-        1
-      )
-    ])
+            }
+          ])
+        })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
