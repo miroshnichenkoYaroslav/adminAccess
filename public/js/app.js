@@ -1714,7 +1714,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
 
     // TODO overlay
     axios.post('/users').then(function (response) {
-      console.log(response);
       _this.rows = response.data;
     });
   },

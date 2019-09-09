@@ -17,12 +17,14 @@ class UsersTableSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('secret123'),
+            'role' => 'admin',
         ]);
 
         DB::table('users')->insert([
             'name' => 'superadmin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('secret123'),
+            'role' => 'superadmin',
         ]);
     }
 }
