@@ -123,7 +123,7 @@ class AdminCabinetController extends Controller
             $numberLastBackslash = strripos($controllerNameAndMethod[0], '\\');
             $controllerName = substr($controllerNameAndMethod[0], $numberLastBackslash + 1);
             if (!in_array($controllerName, $forbiddenControllers)) {
-                $allowedControllers[] = $controllerName;
+                $allowedControllers['name'] = $controllerName;
             }
         }
 

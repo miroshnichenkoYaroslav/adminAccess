@@ -18,11 +18,20 @@
                         <td>{{ row.name }}</td>
                         <td>{{ row.email }}</td>
                     </tr>
-                    <tr v-if="expanded === row.id">
-                        <td colspan="6">
-
-                        </td>
-                    </tr>
+                    <template v-if="expanded === row.id">
+                        <tr >
+                            <td><b>Name Controller</b></td>
+                            <td><b>Access Status</b></td>
+                        </tr>
+                        <tr v-if="expanded === row.id">
+                            <td>
+                                {{ controllers.name }}
+                            </td>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                        </tr>
+                    </template>
                 </template>
             </datatable>
         </div>
@@ -32,8 +41,9 @@
 <script>
 import Vue from 'vue';
 import DatatableFactory from 'vuejs-datatable';
-
 Vue.use(DatatableFactory);
+import getAllowedControllers from '../api/getAllowedControllers';
+
 export default {
     mounted () {
         // TODO overlay
@@ -74,10 +84,11 @@ export default {
             ],
             rows: [],
             expanded: null,
+            controllers: [],
         };
     },
     methods: {
-        expand: function (id) {
+        expand (id) {
             if (this.expanded === id) {
                 this.expanded = null;
 
@@ -85,6 +96,11 @@ export default {
             }
 
             this.expanded = id;
+
+            getAllowedControllers()
+                .then((response) => {
+                    this.controllers = response.data;
+                });
         }
     }
 };

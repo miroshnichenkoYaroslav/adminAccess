@@ -1701,6 +1701,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuejs_datatable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datatable */ "./node_modules/vuejs-datatable/dist/vuejs-datatable.js");
 /* harmony import */ var vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _api_getAllowedControllers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/getAllowedControllers */ "./resources/js/api/getAllowedControllers.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1735,6 +1745,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default.a);
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -1769,17 +1780,23 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
         field: 'email'
       }],
       rows: [],
-      expanded: null
+      expanded: null,
+      controllers: []
     };
   },
   methods: {
     expand: function expand(id) {
+      var _this2 = this;
+
       if (this.expanded === id) {
         this.expanded = null;
         return;
       }
 
       this.expanded = id;
+      Object(_api_getAllowedControllers__WEBPACK_IMPORTED_MODULE_2__["default"])().then(function (response) {
+        _this2.controllers = response.data;
+      });
     }
   }
 });
@@ -37121,7 +37138,29 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _vm.expanded === row.id
-                    ? _c("tr", [_c("td", { attrs: { colspan: "6" } })])
+                    ? [
+                        _c("tr", [
+                          _c("td", [_c("b", [_vm._v("Name Controller")])]),
+                          _vm._v(" "),
+                          _c("td", [_c("b", [_vm._v("Access Status")])])
+                        ]),
+                        _vm._v(" "),
+                        _vm.expanded === row.id
+                          ? _c("tr", [
+                              _c("td", [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(_vm.controllers.name) +
+                                    "\n                        "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", { attrs: { type: "checkbox" } })
+                              ])
+                            ])
+                          : _vm._e()
+                      ]
                     : _vm._e()
                 ]
               }
@@ -49287,6 +49326,28 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+
+/***/ "./resources/js/api/getAllowedControllers.js":
+/*!***************************************************!*\
+  !*** ./resources/js/api/getAllowedControllers.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getAllowedControllers; });
+function getAllowedControllers() {
+  return new Promise(function (resolve, reject) {
+    axios.post('/get-allowed-controllers').then(function (response) {
+      resolve(response);
+    })["catch"](function (error) {
+      reject(error);
+    });
+  });
+}
 
 /***/ }),
 

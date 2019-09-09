@@ -28,5 +28,7 @@ Route::group(['middleware' => 'checkAccess'], function() {
     Route::get('/page2', function() {
         return view('admin.page2');
     });
+
+    Route::post('/get-allowed-controllers', 'AdminCabinetController@getAllowedControllers')->name('getAllowedControllers');
 });
 
