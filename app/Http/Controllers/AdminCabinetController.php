@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class AdminCabinetController extends Controller
 {
@@ -15,6 +16,7 @@ class AdminCabinetController extends Controller
      */
     public function index()
     {
+
         return view('admin.index');
     }
 
@@ -36,7 +38,7 @@ class AdminCabinetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,7 +49,7 @@ class AdminCabinetController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -58,7 +60,7 @@ class AdminCabinetController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -69,8 +71,8 @@ class AdminCabinetController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -81,11 +83,52 @@ class AdminCabinetController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Get allowed controllers on edit access.
+     *
+     * @return array
+     */
+    public function getAllowedControllers(): array
+    {
+        // Controllers to which access cannot be changed
+        $forbiddenControllers = [
+            'LoginController',
+            'RegisterController',
+            'ForgotPasswordController',
+            'ResetPasswordController',
+            'VerificationController',
+            'HomeController',
+            'Controller'
+        ];
+
+        $controllers = [];
+        foreach (Route::getRoutes()->getRoutes() as $route) {
+            $action = $route->getAction();
+            if (array_key_exists('controller', $action)) {
+                $controllers[] = $action['controller'];
+            }
+        }
+
+        $allowedControllers = [];
+        foreach ($controllers as $controller) {
+            $controllerNameAndMethod = explode('@', $controller);
+            $numberLastBackslash = strripos($controllerNameAndMethod[0], '\\');
+            $controllerName = substr($controllerNameAndMethod[0], $numberLastBackslash + 1);
+            if (!in_array($controllerName, $forbiddenControllers)) {
+                $allowedControllers[] = $controllerName;
+            }
+        }
+
+        $uniqueAllowedControllers = array_unique($allowedControllers);
+
+        return $uniqueAllowedControllers;
     }
 }
