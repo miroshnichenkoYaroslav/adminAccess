@@ -1732,6 +1732,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
       }, {
         label: 'Email',
         field: 'email'
+      }, {
+        label: 'Actions',
+        field: 'email'
       }],
       rows: []
     };

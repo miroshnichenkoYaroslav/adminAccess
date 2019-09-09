@@ -20,4 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('admin', 'AdminCabinetController')->middleware('auth');
+
 Route::post('users', 'AdminCabinetController@usersList')->name('users');
+
+Route::get('/page1', function() {
+    return view('admin.page1');
+});
+Route::get('/page2', function() {
+    return view('admin.page2');
+});

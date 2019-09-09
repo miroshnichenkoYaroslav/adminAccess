@@ -22,6 +22,7 @@ Vue.use(DatatableFactory);
                     { label: 'Role', field: 'role', headerClass: 'class-in-header second-class' },
                     { label: 'First Name', field: 'name' },
                     { label: 'Email', field: 'email' },
+                    { label: 'Actions', field: 'email' },
                 ],
                 rows: [],
             };
