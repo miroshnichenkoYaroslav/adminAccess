@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::resource('admin', 'AdminCabinetController')->middleware('auth');
 
 Route::post('users', 'AdminCabinetController@usersList')->name('users');
