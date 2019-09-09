@@ -20,6 +20,7 @@ class CheckAccessToPage
         if (Auth::user()->role !== 'superadmin') {
             return redirect()->back();
         }
+
         return $next($request);
     }
 }
