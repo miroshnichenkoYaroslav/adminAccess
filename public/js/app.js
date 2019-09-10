@@ -1743,6 +1743,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -1793,8 +1796,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
 
       this.expanded = id;
       Object(_api_getAllControllersAndPermissions__WEBPACK_IMPORTED_MODULE_2__["default"])(id).then(function (response) {
-        _this2.controllers = response.data.controllers;
-        _this2.permissions = response.data.permissions;
+        _this2.controllers = response.data;
       });
     }
   }
@@ -37144,20 +37146,21 @@ var render = function() {
                           _c("td", [_c("b", [_vm._v("Access Status")])])
                         ]),
                         _vm._v(" "),
-                        _vm._l(_vm.controllers, function(controller) {
+                        _vm._l(_vm.controllers, function(value, name) {
                           return _c("tr", [
                             _c("td", [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(controller.name) +
+                                  _vm._s(name) +
                                   "\n                        "
                               )
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _vm.controllers
-                                ? _c("input", { attrs: { type: "checkbox" } })
-                                : _vm._e()
+                              _c("input", {
+                                attrs: { type: "checkbox" },
+                                domProps: { checked: value === true }
+                              })
                             ])
                           ])
                         })

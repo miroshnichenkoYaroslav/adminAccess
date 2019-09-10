@@ -23,12 +23,15 @@
                             <td><b>Name Controller</b></td>
                             <td><b>Access Status</b></td>
                         </tr>
-                        <tr v-for="controller in controllers">
+                        <tr v-for="(value, name) in controllers">
                             <td>
-                                {{ controller.name }}
+                                {{ name }}
                             </td>
                             <td>
-                                <input type="checkbox" v-if="controllers" >
+                                <input
+                                    type="checkbox"
+                                    :checked="value === true"
+                                >
                             </td>
                         </tr>
                     </template>
@@ -97,8 +100,7 @@ export default {
 
             getAllControllersAndPermissions (id)
                 .then((response) => {
-                    this.controllers = response.data.controllers;
-                    this.permissions = response.data.permissions;
+                    this.controllers = response.data;
                 });
         }
     }
