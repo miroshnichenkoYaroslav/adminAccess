@@ -1703,6 +1703,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _api_getAllControllersAndPermissions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/getAllControllersAndPermissions */ "./resources/js/api/getAllControllersAndPermissions.js");
 /* harmony import */ var _api_getUsers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/getUsers */ "./resources/js/api/getUsers.js");
+/* harmony import */ var _api_changeAccessStatusForController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/changeAccessStatusForController */ "./resources/js/api/changeAccessStatusForController.js");
+//
+//
 //
 //
 //
@@ -1751,6 +1754,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default.a);
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -1797,6 +1801,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
       this.expanded = id;
       Object(_api_getAllControllersAndPermissions__WEBPACK_IMPORTED_MODULE_2__["default"])(id).then(function (response) {
         _this2.controllers = response.data;
+      });
+    },
+    changeAccessStatus: function changeAccessStatus(name, id) {
+      var data = {
+        accessStatus: this.$refs[name][0].checked,
+        controller: name,
+        id: id
+      };
+      Object(_api_changeAccessStatusForController__WEBPACK_IMPORTED_MODULE_4__["default"])(data).then(function (response) {
+        console.log(response);
       });
     }
   }
@@ -37158,8 +37172,18 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [
                               _c("input", {
+                                ref: name,
+                                refInFor: true,
                                 attrs: { type: "checkbox" },
-                                domProps: { checked: value === true }
+                                domProps: { checked: value === true },
+                                on: {
+                                  change: function($event) {
+                                    return _vm.changeAccessStatus(
+                                      name,
+                                      _vm.expanded
+                                    )
+                                  }
+                                }
                               })
                             ])
                           ])
@@ -49330,6 +49354,28 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+
+/***/ "./resources/js/api/changeAccessStatusForController.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/api/changeAccessStatusForController.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return changeAccessStatusForController; });
+function changeAccessStatusForController(data) {
+  return new Promise(function (resolve, reject) {
+    axios.post('/change-access-status-for-controller', data).then(function (response) {
+      resolve(response);
+    })["catch"](function (error) {
+      reject(error);
+    });
+  });
+}
 
 /***/ }),
 

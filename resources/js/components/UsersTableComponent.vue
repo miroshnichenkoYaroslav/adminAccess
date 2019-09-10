@@ -29,8 +29,10 @@
                             </td>
                             <td>
                                 <input
+                                    :ref="name"
                                     type="checkbox"
                                     :checked="value === true"
+                                    @change="changeAccessStatus(name, expanded)"
                                 >
                             </td>
                         </tr>
@@ -48,6 +50,7 @@ import DatatableFactory from 'vuejs-datatable';
 Vue.use(DatatableFactory);
 import getAllControllersAndPermissions from '../api/getAllControllersAndPermissions';
 import getUsers from '../api/getUsers';
+import changeAccessStatusForController from '../api/changeAccessStatusForController';
 
 export default {
     mounted () {
@@ -102,6 +105,19 @@ export default {
                 .then((response) => {
                     this.controllers = response.data;
                 });
+        },
+        changeAccessStatus (name, id) {
+            const data = {
+                accessStatus: this.$refs[name][0].checked,
+                controller: name,
+                id,
+            };
+
+            changeAccessStatusForController(data)
+                .then((response) => {
+                    console.log(response);
+                });
+
         }
     }
 };

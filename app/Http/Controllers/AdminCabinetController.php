@@ -118,4 +118,22 @@ class AdminCabinetController extends Controller
             'Controller'
         ];
     }
+
+    /**
+     * Change permission for user.
+     */
+    public function changeAccessStatusForController (): void
+    {
+        $id = request()->id;
+        $controller = request()->controller;
+        $accessStatus = request()->accessStatus;
+
+        $user = User::find($id);
+
+        if ($accessStatus) {
+            $user->givePermissionTo('view ' . $controller);
+        } else {
+            $user->revokePermissionTo('view ' . $controller);
+        }
+    }
 }
