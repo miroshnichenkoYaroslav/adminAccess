@@ -17,18 +17,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('admin', 'AdminCabinetController')->middleware('auth');
+Route::group(['middleware' => 'can:view-AdminCabinetController'], function() {
+    Route::resource('admin', 'AdminCabinetController');
 
-Route::post('users', 'AdminCabinetController@usersList')->name('users');
-
-Route::group(['middleware' => 'checkAccess'], function() {
-    Route::get('/page1', function() {
-        return view('admin.page1');
-    });
-    Route::get('/page2', function() {
-        return view('admin.page2');
-    });
+    Route::post('users', 'AdminCabinetController@usersList')->name('users');
 
     Route::post('/get-allowed-controllers', 'AdminCabinetController@getAllowedControllers')->name('getAllowedControllers');
 });
 
+Route::group(['middleware' => 'can:view-PageController'], function() {
+    Route::get('/page1', 'PageController@page1');
+
+    Route::get('/page2', 'PageController@page2');
+});

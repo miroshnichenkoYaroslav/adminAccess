@@ -25,6 +25,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('view-AdminCabinetController', function ($user) {
+            if ($user->role->name === 'superadmin') {
+                return true;
+            }
+
+            return $user->hasPermissionTo('view AdminCabinetController');
+        });
+
+        Gate::define('view-PageController', function ($user) {
+            if ($user->role->name === 'superadmin') {
+                return true;
+            }
+
+            return $user->hasPermissionTo('view PageController');
+        });
     }
 }

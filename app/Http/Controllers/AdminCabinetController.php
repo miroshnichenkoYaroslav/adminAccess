@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +15,7 @@ class AdminCabinetController extends Controller
      */
     public function index()
     {
-
+        $this->getAllowedControllers();
         return view('admin.index');
     }
 
@@ -122,13 +121,31 @@ class AdminCabinetController extends Controller
             $controllerNameAndMethod = explode('@', $controller);
             $numberLastBackslash = strripos($controllerNameAndMethod[0], '\\');
             $controllerName = substr($controllerNameAndMethod[0], $numberLastBackslash + 1);
+
             if (!in_array($controllerName, $forbiddenControllers)) {
-                $allowedControllers['name'] = $controllerName;
+                $allowedControllers[] = $controllerName;
             }
         }
 
         $uniqueAllowedControllers = array_unique($allowedControllers);
 
-        return $uniqueAllowedControllers;
+        return $this->prepareControllers($uniqueAllowedControllers);
+    }
+
+    /**
+     * Аdd key a name to the controller.
+     *
+     * @param array $uniqueAllowedControllers
+     * @param array $controllers
+     *
+     * @return array
+     */
+    public function prepareControllers(array $uniqueAllowedControllers, $controllers = []): array
+    {
+        foreach ($uniqueAllowedControllers as $controller) {
+            $controllers[]['name'] = $controller;
+        }
+
+        return $controllers;
     }
 }

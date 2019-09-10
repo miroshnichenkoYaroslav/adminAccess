@@ -1,8 +1,8 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,18 +13,21 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        $admin = User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('secret123'),
-            'role' => 'admin',
+            'role_id' => '2',
         ]);
+        $admin->assignRole('admin');
+        $admin->givePermissionTo('view AdminCabinetController');
 
-        DB::table('users')->insert([
+        $superAdmin = User::create([
             'name' => 'superadmin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('secret123'),
-            'role' => 'superadmin',
+            'role_id' => '1',
         ]);
+        $superAdmin->assignRole('superadmin');
     }
 }

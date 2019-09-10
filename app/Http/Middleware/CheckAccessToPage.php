@@ -17,10 +17,10 @@ class CheckAccessToPage
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->role !== 'superadmin') {
-            return redirect()->back();
-        }
-
-        return $next($request);
+//        if (Auth::user()->role !== 'superadmin') {
+//            return redirect()->back();
+//        }
+//
+//        return $next($request);
     }
 }
