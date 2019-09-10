@@ -22,7 +22,8 @@ Route::group(['middleware' => 'can:view-AdminCabinetController'], function() {
 
     Route::post('users', 'AdminCabinetController@usersList')->name('users');
 
-    Route::post('/get-allowed-controllers', 'AdminCabinetController@getAllowedControllers')->name('getAllowedControllers');
+//    Route::post('/get-all-controllers-and-permissions/{id}', 'AdminCabinetController@getAllowedControllersAndPermissions');
+    Route::post('/get-all-controllers-and-permissions/{user}', 'AdminCabinetController@getAllowedControllersAndPermissions');
 });
 
 Route::group(['middleware' => 'can:view-PageController'], function() {

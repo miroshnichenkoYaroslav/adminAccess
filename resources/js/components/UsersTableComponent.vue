@@ -6,7 +6,7 @@
                     <tr>
                         <td>
                             <button
-                                v-if="row.role !== 'superadmin'"
+                                v-if="row.name !== 'superadmin'"
                                 class="btn btn-xs btn-primary"
                                 @click="expand(row.id)"
                             >
@@ -14,21 +14,21 @@
                             </button>
                         </td>
                         <td>{{ row.id }}</td>
-                        <td>{{ row.role }}</td>
+                        <td>{{ row.role.name }}</td>
                         <td>{{ row.name }}</td>
                         <td>{{ row.email }}</td>
                     </tr>
                     <template v-if="expanded === row.id">
-                        <tr >
+                        <tr>
                             <td><b>Name Controller</b></td>
                             <td><b>Access Status</b></td>
                         </tr>
-                        <tr v-if="expanded === row.id">
+                        <tr v-for="controller in controllers">
                             <td>
-                                {{ controllers.name }}
+                                {{ controller.name }}
                             </td>
                             <td>
-                                <input type="checkbox">
+                                <input type="checkbox" v-if="controllers" >
                             </td>
                         </tr>
                     </template>
@@ -41,18 +41,15 @@
 <script>
 import Vue from 'vue';
 import DatatableFactory from 'vuejs-datatable';
+
 Vue.use(DatatableFactory);
-import getAllowedControllers from '../api/getAllowedControllers';
+import getAllControllersAndPermissions from '../api/getAllControllersAndPermissions';
+import getUsers from '../api/getUsers';
 
 export default {
     mounted () {
-        // TODO overlay
-        axios.post('/users')
+        getUsers()
             .then((response) => {
-                _.each(response.data, (value) => {
-                    value.actions = '<a class="btn btn-primary" href="11" role="button">2222</a>';
-                });
-
                 this.rows = response.data;
             });
     },
@@ -85,6 +82,7 @@ export default {
             rows: [],
             expanded: null,
             controllers: [],
+            permissions: [],
         };
     },
     methods: {
@@ -97,9 +95,10 @@ export default {
 
             this.expanded = id;
 
-            getAllowedControllers()
+            getAllControllersAndPermissions (id)
                 .then((response) => {
-                    this.controllers = response.data;
+                    this.controllers = response.data.controllers;
+                    this.permissions = response.data.permissions;
                 });
         }
     }

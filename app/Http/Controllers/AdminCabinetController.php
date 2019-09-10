@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response;
@@ -33,21 +34,62 @@ class AdminCabinetController extends Controller
     /**
      * Get allowed controllers on edit access.
      *
+     * @param User $user
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    public function getAllowedControllersAndPermissions(User $user): array
+    {
+        $forbiddenControllers = $this->getForbiddenControllers();
+
+        $allowedControllers = [];
+        $controllers = $this->getAllControllersInSystem();
+        $controllersFromPermissions = $this->getAllPermissionsForUser($user);
+
+        foreach ($controllers as $controller) {
+            $controllerNameAndMethod = explode('@', $controller);
+            $numberLastBackslash = strripos($controllerNameAndMethod[0], '\\');
+            $controllerName = substr($controllerNameAndMethod[0], $numberLastBackslash + 1);
+
+            if (!in_array($controllerName, $forbiddenControllers)) {
+                $allowedControllers[$controllerName] = in_array($controllerName, $controllersFromPermissions);
+            }
+        }
+
+        return $allowedControllers;
+    }
+
+    /**
+     * Gets all controllers to which access is allowed from the selected user.
+     *
+     * @param User $user
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    public function getAllPermissionsForUser(User $user): array
+    {
+        $permissions = $user->getAllPermissions()->pluck('name');
+        $controllers = [];
+        foreach ($permissions as $permission) {
+            $controllerName = explode(' ', $permission);
+            $controllers[] = $controllerName[1];
+        }
+
+        return $controllers;
+
+    }
+
+    /**
+     * Gets all the controllers that are in the system.
+     *
      * @return array
      */
-    public function getAllowedControllers(): array
+    public function getAllControllersInSystem(): array
     {
-        // Controllers to which access cannot be changed
-        $forbiddenControllers = [
-            'LoginController',
-            'RegisterController',
-            'ForgotPasswordController',
-            'ResetPasswordController',
-            'VerificationController',
-            'HomeController',
-            'Controller'
-        ];
-
         $controllers = [];
         foreach (Route::getRoutes()->getRoutes() as $route) {
             $action = $route->getAction();
@@ -56,36 +98,24 @@ class AdminCabinetController extends Controller
             }
         }
 
-        $allowedControllers = [];
-        foreach ($controllers as $controller) {
-            $controllerNameAndMethod = explode('@', $controller);
-            $numberLastBackslash = strripos($controllerNameAndMethod[0], '\\');
-            $controllerName = substr($controllerNameAndMethod[0], $numberLastBackslash + 1);
-
-            if (!in_array($controllerName, $forbiddenControllers)) {
-                $allowedControllers[] = $controllerName;
-            }
-        }
-
-        $uniqueAllowedControllers = array_unique($allowedControllers);
-
-        return $this->prepareControllers($uniqueAllowedControllers);
+        return $controllers;
     }
 
     /**
-     * Аdd key a name to the controller.
-     *
-     * @param array $uniqueAllowedControllers
-     * @param array $controllers
+     * Controllers to which access cannot be changed.
      *
      * @return array
      */
-    public function prepareControllers(array $uniqueAllowedControllers, $controllers = []): array
+    public function getForbiddenControllers(): array
     {
-        foreach ($uniqueAllowedControllers as $controller) {
-            $controllers[]['name'] = $controller;
-        }
-
-        return $controllers;
+        return [
+            'LoginController',
+            'RegisterController',
+            'ForgotPasswordController',
+            'ResetPasswordController',
+            'VerificationController',
+            'HomeController',
+            'Controller'
+        ];
     }
 }

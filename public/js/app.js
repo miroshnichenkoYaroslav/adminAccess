@@ -1701,7 +1701,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuejs_datatable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datatable */ "./node_modules/vuejs-datatable/dist/vuejs-datatable.js");
 /* harmony import */ var vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _api_getAllowedControllers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/getAllowedControllers */ "./resources/js/api/getAllowedControllers.js");
+/* harmony import */ var _api_getAllControllersAndPermissions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/getAllControllersAndPermissions */ "./resources/js/api/getAllControllersAndPermissions.js");
+/* harmony import */ var _api_getUsers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/getUsers */ "./resources/js/api/getUsers.js");
 //
 //
 //
@@ -1746,16 +1747,12 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED_MODULE_1___default.a);
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
 
-    // TODO overlay
-    axios.post('/users').then(function (response) {
-      _.each(response.data, function (value) {
-        value.actions = '<a class="btn btn-primary" href="11" role="button">2222</a>';
-      });
-
+    Object(_api_getUsers__WEBPACK_IMPORTED_MODULE_3__["default"])().then(function (response) {
       _this.rows = response.data;
     });
   },
@@ -1781,7 +1778,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
       }],
       rows: [],
       expanded: null,
-      controllers: []
+      controllers: [],
+      permissions: []
     };
   },
   methods: {
@@ -1794,8 +1792,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
       }
 
       this.expanded = id;
-      Object(_api_getAllowedControllers__WEBPACK_IMPORTED_MODULE_2__["default"])().then(function (response) {
-        _this2.controllers = response.data;
+      Object(_api_getAllControllersAndPermissions__WEBPACK_IMPORTED_MODULE_2__["default"])(id).then(function (response) {
+        _this2.controllers = response.data.controllers;
+        _this2.permissions = response.data.permissions;
       });
     }
   }
@@ -37112,7 +37111,7 @@ var render = function() {
                 return [
                   _c("tr", [
                     _c("td", [
-                      row.role !== "superadmin"
+                      row.name !== "superadmin"
                         ? _c(
                             "button",
                             {
@@ -37130,7 +37129,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(row.id))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(row.role))]),
+                    _c("td", [_vm._v(_vm._s(row.role.name))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(row.name))]),
                     _vm._v(" "),
@@ -37145,21 +37144,23 @@ var render = function() {
                           _c("td", [_c("b", [_vm._v("Access Status")])])
                         ]),
                         _vm._v(" "),
-                        _vm.expanded === row.id
-                          ? _c("tr", [
-                              _c("td", [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.controllers.name) +
-                                    "\n                        "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c("input", { attrs: { type: "checkbox" } })
-                              ])
+                        _vm._l(_vm.controllers, function(controller) {
+                          return _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(controller.name) +
+                                  "\n                        "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm.controllers
+                                ? _c("input", { attrs: { type: "checkbox" } })
+                                : _vm._e()
                             ])
-                          : _vm._e()
+                          ])
+                        })
                       ]
                     : _vm._e()
                 ]
@@ -49329,19 +49330,41 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/js/api/getAllowedControllers.js":
-/*!***************************************************!*\
-  !*** ./resources/js/api/getAllowedControllers.js ***!
-  \***************************************************/
+/***/ "./resources/js/api/getAllControllersAndPermissions.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/api/getAllControllersAndPermissions.js ***!
+  \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getAllowedControllers; });
-function getAllowedControllers() {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getAllControllersAndPermissions; });
+function getAllControllersAndPermissions(id) {
   return new Promise(function (resolve, reject) {
-    axios.post('/get-allowed-controllers').then(function (response) {
+    axios.post('/get-all-controllers-and-permissions/' + id).then(function (response) {
+      resolve(response);
+    })["catch"](function (error) {
+      reject(error);
+    });
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/api/getUsers.js":
+/*!**************************************!*\
+  !*** ./resources/js/api/getUsers.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getUsers; });
+function getUsers() {
+  return new Promise(function (resolve, reject) {
+    axios.post('/users').then(function (response) {
       resolve(response);
     })["catch"](function (error) {
       reject(error);

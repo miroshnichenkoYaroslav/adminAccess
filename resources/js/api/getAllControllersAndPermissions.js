@@ -1,6 +1,6 @@
-export default function getAllowedControllers () {
+export default function getAllControllersAndPermissions (id) {
     return new Promise((resolve, reject) => {
-        axios.post('/get-allowed-controllers')
+        axios.post('/get-all-controllers-and-permissions/' + id)
             .then((response) => {
                 resolve(response);
             })
