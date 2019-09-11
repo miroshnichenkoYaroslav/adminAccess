@@ -9,6 +9,7 @@
                                 v-if="row.name !== 'superadmin'"
                                 class="btn btn-xs btn-primary"
                                 @click="expand(row.id)"
+                                :disabled="meId === row.id"
                             >
                                 <span>Edit Access</span>
                             </button>
@@ -46,14 +47,19 @@
 <script>
 import Vue from 'vue';
 import DatatableFactory from 'vuejs-datatable';
-
 Vue.use(DatatableFactory);
+
 import getAllControllersAndPermissions from '../api/getAllControllersAndPermissions';
 import getUsers from '../api/getUsers';
 import changeAccessStatusForController from '../api/changeAccessStatusForController';
+import loaMe from '../api/loaMe';
 
 export default {
     mounted () {
+        loaMe()
+            .then((response) => {
+                this.meId = response.data;
+            });
         getUsers()
             .then((response) => {
                 this.rows = response.data;
@@ -89,6 +95,7 @@ export default {
             expanded: null,
             controllers: [],
             permissions: [],
+            meId: null,
         };
     },
     methods: {

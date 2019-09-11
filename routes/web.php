@@ -24,7 +24,9 @@ Route::group(['middleware' => 'can:view-AdminCabinetController'], function() {
 
     Route::post('/get-all-controllers-and-permissions/{user}', 'AdminCabinetController@getAllowedControllersAndPermissions');
     Route::post('/change-access-status-for-controller', 'AdminCabinetController@changeAccessStatusForController');
-//    Route::post('/test', 'AdminCabinetController@changeAccessStatusForController');
+    Route::post('/load-me', function () {
+        return auth()->user()->id;
+    });
 });
 
 Route::group(['middleware' => 'can:view-PageController'], function() {

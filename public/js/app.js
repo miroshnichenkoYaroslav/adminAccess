@@ -1704,6 +1704,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_getAllControllersAndPermissions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/getAllControllersAndPermissions */ "./resources/js/api/getAllControllersAndPermissions.js");
 /* harmony import */ var _api_getUsers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/getUsers */ "./resources/js/api/getUsers.js");
 /* harmony import */ var _api_changeAccessStatusForController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/changeAccessStatusForController */ "./resources/js/api/changeAccessStatusForController.js");
+/* harmony import */ var _api_loaMe__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api/loaMe */ "./resources/js/api/loaMe.js");
+//
 //
 //
 //
@@ -1755,10 +1757,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
 
+    Object(_api_loaMe__WEBPACK_IMPORTED_MODULE_5__["default"])().then(function (response) {
+      _this.meId = response.data;
+    });
     Object(_api_getUsers__WEBPACK_IMPORTED_MODULE_3__["default"])().then(function (response) {
       _this.rows = response.data;
     });
@@ -1786,7 +1792,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_datatable__WEBPACK_IMPORTED
       rows: [],
       expanded: null,
       controllers: [],
-      permissions: []
+      permissions: [],
+      meId: null
     };
   },
   methods: {
@@ -37132,6 +37139,7 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-xs btn-primary",
+                              attrs: { disabled: _vm.meId === row.id },
                               on: {
                                 click: function($event) {
                                   return _vm.expand(row.id)
@@ -49414,6 +49422,28 @@ __webpack_require__.r(__webpack_exports__);
 function getUsers() {
   return new Promise(function (resolve, reject) {
     axios.post('/users').then(function (response) {
+      resolve(response);
+    })["catch"](function (error) {
+      reject(error);
+    });
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/api/loaMe.js":
+/*!***********************************!*\
+  !*** ./resources/js/api/loaMe.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getUsers; });
+function getUsers() {
+  return new Promise(function (resolve, reject) {
+    axios.post('/load-me').then(function (response) {
       resolve(response);
     })["catch"](function (error) {
       reject(error);
