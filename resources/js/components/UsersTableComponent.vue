@@ -52,11 +52,11 @@ Vue.use(DatatableFactory);
 import getAllControllersAndPermissions from '../api/getAllControllersAndPermissions';
 import getUsers from '../api/getUsers';
 import changeAccessStatusForController from '../api/changeAccessStatusForController';
-import loadMe from '../api/loaMe';
+import loadMeID from '../api/loadMeID';
 
 export default {
     mounted () {
-        loadMe()
+        loadMeID()
             .then((response) => {
                 this.meId = response.data;
             });

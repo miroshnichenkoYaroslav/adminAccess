@@ -1,3 +1,8 @@
+/**
+ * Get all users.
+ *
+ * @return {Promise<any>}
+ */
 export default function getUsers () {
     return new Promise((resolve, reject) => {
         axios.post('/users')
