@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PageController extends Controller
 {
-    public function page1()
+    public function page1(): Response
     {
-        return view('admin.page1');
+        return response()->view('admin.page1');
     }
 
-    public function page2()
+    public function page2(): Response
     {
-        return view('admin.page2');
+        return response()->view('admin.page2');
     }
 }
