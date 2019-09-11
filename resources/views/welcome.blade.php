@@ -6,7 +6,7 @@
             @if (Route::has('login'))
                 <div class="links">
                     @auth
-                        @component('components.linkToAdmin', ['url' => route('admin.index'), 'linkName' => 'Admin Cabinet'])
+                        @component('components.linkToAdmin', ['url' => route('admin'), 'linkName' => 'Admin Cabinet'])
                         @endcomponent
                     @else
                         <h1>

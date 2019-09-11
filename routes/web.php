@@ -18,7 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => 'can:view-AdminCabinetController'], function() {
-    Route::get('admin', 'AdminCabinetController@index');
+    Route::get('admin', 'AdminCabinetController@index')->name('admin');
 
     Route::post('users', 'AdminCabinetController@usersList')->name('users');
 
