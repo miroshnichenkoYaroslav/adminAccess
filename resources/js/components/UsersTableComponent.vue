@@ -29,12 +29,14 @@
                                 {{ name }}
                             </td>
                             <td>
-                                <input
-                                    :ref="name"
-                                    type="checkbox"
-                                    :checked="value === true"
-                                    @change="changeAccessStatus(name, expanded)"
-                                >
+                                <label>
+                                    <input
+                                        :ref="name"
+                                        type="checkbox"
+                                        :checked="value === true"
+                                        @change="changeAccessStatus(name, expanded)"
+                                    >
+                                </label>
                             </td>
                         </tr>
                     </template>
