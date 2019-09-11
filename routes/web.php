@@ -34,3 +34,5 @@ Route::group(['middleware' => 'can:view-PageController'], function() {
 
     Route::get('/page2', 'PageController@page2');
 });
+
+// When adding a new controller, you need to wrap it in middleware and add it to the gate.

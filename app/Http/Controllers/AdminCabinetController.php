@@ -121,6 +121,8 @@ class AdminCabinetController extends Controller
 
     /**
      * Change permission for user.
+     *
+     * @return void
      */
     public function changeAccessStatusForController (): void
     {
