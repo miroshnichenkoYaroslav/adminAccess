@@ -6,7 +6,7 @@ use App\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 class AdminCabinetController extends Controller
@@ -16,7 +16,7 @@ class AdminCabinetController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return response()->view('admin.index');
     }
