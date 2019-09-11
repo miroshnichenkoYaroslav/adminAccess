@@ -1,4 +1,4 @@
-export default function getUsers () {
+export default function loadMe () {
     return new Promise((resolve, reject) => {
         axios.post('/load-me')
             .then((response) => {
